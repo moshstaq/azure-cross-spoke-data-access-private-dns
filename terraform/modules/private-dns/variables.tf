@@ -1,32 +1,22 @@
-variable "location" {
-  description = "Azure region for resources"
+variable "zone_name" {
+  description = "Private DNS zone name e.g. privatelink.blob.core.windows.net"
   type        = string
-  default     = "eastus2"
 }
 
 variable "resource_group_name" {
-  description = "Name of the resource group to create"
-  type        = string
-  default     = "rg-data-access"
-
-}
-
-variable "virtual_network" {
-  description = "Name of the azure virtual network"
+  description = "Resource group to host the DNS zone"
   type        = string
 }
-variable "address_space" {
-  description = "The address IP for the VNet"
-  type        = list(string)
-}
 
+# Map of link_name => vnet_id
+# Example: { "hub" = "/subscriptions/.../vnet-hub", "spoke" = "/subscriptions/.../vnet-spoke" }
+variable "vnet_links" {
+  description = "Map of VNet link names to VNet resource IDs"
+  type        = map(string)
+}
 
 variable "tags" {
-  description = "Tags to apply to resources"
+  description = "Tags to apply to all resources"
   type        = map(string)
-  default = {
-    environment = "dev"
-    workload    = "data-access"
-    managed_by  = "terraform"
-  }
+  default     = {}
 }

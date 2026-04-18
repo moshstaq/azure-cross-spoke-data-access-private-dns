@@ -1,39 +1,30 @@
 variable "location" {
-  description = "Azure region for resources"
+  description = "Azure region"
   type        = string
-  default     = "eastus2"
 }
 
 variable "resource_group_name" {
-  description = "Name of the resource group to create"
+  description = "Resource group for storage resources"
   type        = string
-  default     = "rg-data-access"
-
 }
+
+variable "name_prefix" {
+  description = "Short prefix for storage account name (lowercase, no hyphens)"
+  type        = string
+}
+
+variable "subnet_id" {
+  description = "Subnet ID where the Private Endpoint NIC will be placed"
+  type        = string
+}
+
+variable "private_dns_zone_id" {
+  description = "Resource ID of the Private DNS Zone for blob storage"
+  type        = string
+}
+
 variable "tags" {
-  description = "Tags to apply to resources"
+  description = "Tags to apply to all resources"
   type        = map(string)
-  default = {
-    environment = "dev"
-    workload    = "data-access"
-    managed_by  = "terraform"
-  }
-}
-
-
-variable "virtual_network" {
-  description = "Name of the azure virtual network"
-  type        = string
-}
-
-
-variable "address_space" {
-  description = "The address IP for the VNet"
-  type        = list(string)
-}
-
-variable "subnet_name" {
-  description = "The name of the subnet"
-  type        = string
-
+  default     = {}
 }

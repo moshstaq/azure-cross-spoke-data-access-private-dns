@@ -1,54 +1,17 @@
-data "terraform_remote_state" "networking" {
-  backend = "azurerm"
-  config = {
-
-    resource_group_name  = "rg-tfstate"
-    storage_account_name = "sttfstate7tcl"
-    container_name       = "tfstate"
-    key                  = "platform-connectivity.tfstate"
-  }
+# The DNS zone lives in the connectivity RG — it is a shared platform resource
+resource "azurerm_private_dns_zone" "this" {
+  name                = var.zone_name
+  resource_group_name = var.resource_group_name
+  tags                = var.tags
 }
 
+# One link per VNet — driven by the var.vnet_links map
+resource "azurerm_private_dns_zone_virtual_network_link" "this" {
+  for_each = var.vnet_links
 
-data "terraform_remote_state" "networking" {
-  backend = "azurerm"
-  config = {
-
-    resource_group_name  = "rg-tfstate"
-    storage_account_name = "sttfstate7tcl"
-    container_name       = "tfstate"
-    key                  = "spoke-data-access-networking.tfstate"
-  }
-}
-
-
-
-
-resource "azurerm_private_dns_zone" "blob" {
-  name                = "privatelink.blob.core.windows.net"
-  resource_group_name = "rg-platform-connectivity"
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "blob_to_hub" {
-  name                  = "link-blob-hub"
-  resource_group_name   = "rg-platform-connectivity"
-  private_dns_zone_name = azurerm_private_dns_zone.blob.name
-  virtual_network_id    = data.terraform_remote_state.networking.outputs.vnet_hub_id
-  registration_enabled  = false
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "blob_to_spoke" {
-  name                  = "link-blob-spoke"
-  resource_group_name   = "rg-platform-connectivity"
-  private_dns_zone_name = azurerm_private_dns_zone.blob.name
-  virtual_network_id    = data.terraform_remote_state.networking.outputs.vnet_spoke_id
-  registration_enabled  = false
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "blob_to_data" {
-  name                  = "link-blob-data"
-  resource_group_name   = "rg-platform-connectivity"
-  private_dns_zone_name = azurerm_private_dns_zone.blob.name
-  virtual_network_id    = data.terraform_remote_state.networking.outputs.vnet_data_id
+  name                  = "link-${var.zone_name}-${each.key}"
+  resource_group_name   = var.resource_group_name
+  private_dns_zone_name = azurerm_private_dns_zone.this.name
+  virtual_network_id    = each.value
   registration_enabled  = false
 }

@@ -1,39 +1,51 @@
 variable "location" {
-  description = "Azure region for resources"
+  description = "Azure region"
   type        = string
-  default     = "eastus2"
 }
 
 variable "resource_group_name" {
-  description = "Name of the resource group to create"
-  type        = string
-  default     = "rg-data-access"
-
-}
-
-variable "virtual_network" {
-  description = "Name of the azure virtual network"
+  description = "Resource group to create"
   type        = string
 }
 
+variable "vnet_name" {
+  description = "Name of the VNet to create"
+  type        = string
+}
 
 variable "address_space" {
-  description = "The address IP for the VNet"
+  description = "VNet address space"
   type        = list(string)
+}
+
+variable "subnet_name" {
+  description = "Subnet name"
+  type        = string
 }
 
 variable "address_prefixes" {
-  description = "The address prefixes for the subnet"
+  description = "Subnet address prefixes"
   type        = list(string)
+}
 
+# Hub references — passed in from stack, sourced from remote state
+variable "hub_vnet_id" {
+  description = "Resource ID of the hub VNet"
+  type        = string
+}
+
+variable "hub_vnet_name" {
+  description = "Name of the hub VNet"
+  type        = string
+}
+
+variable "hub_resource_group_name" {
+  description = "Resource group containing the hub VNet"
+  type        = string
 }
 
 variable "tags" {
-  description = "Tags to apply to resources"
+  description = "Tags to apply to all resources"
   type        = map(string)
-  default = {
-    environment = "dev"
-    workload    = "data-access"
-    managed_by  = "terraform"
-  }
+  default     = {}
 }
