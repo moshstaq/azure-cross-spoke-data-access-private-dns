@@ -20,11 +20,6 @@ variable "tags" {
   }
 }
 
-variable "location" {
-  description = "Azure region for resources"
-  type        = string
-  default     = "eastus2"
-}
 
 variable "virtual_network" {
   description = "Name of the azure virtual network"
