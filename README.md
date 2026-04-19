@@ -55,8 +55,6 @@ The core challenge is not the individual components. It is wiring them together 
 | VNet links (hub, app-dev, data-access) | Networking           | Enables private DNS resolution per VNet |
 | `st-data-access` (Storage Account)     | Storage              | Data plane — public access disabled     |
 | Private Endpoint on blob               | Storage + Networking | Injects private NIC into subnet         |
-| System-assigned Managed Identity       | Identity             | VM authenticates without credentials    |
-| RBAC: Storage Blob Data Reader         | Identity             | Authorises identity at data plane       |
 
 ---
 
