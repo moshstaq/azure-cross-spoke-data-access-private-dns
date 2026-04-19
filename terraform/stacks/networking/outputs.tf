@@ -14,3 +14,4 @@ output "subnet_id" {
 output "resource_group_name" {
   value = module.networking.resource_group_name
 }
+

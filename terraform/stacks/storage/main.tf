@@ -6,7 +6,7 @@ module "storage" {
   name_prefix         = "dataaccess"
 
   subnet_id           = data.terraform_remote_state.networking.outputs.subnet_id
-  private_dns_zone_id = data.terraform_remote_state.private_dns.outputs.blob_dns_zone_id
+  private_dns_zone_id = data.terraform_remote_state.connectivity.outputs.private_dns_zone_blob_id
 
   tags = {
     environment = "dev"
